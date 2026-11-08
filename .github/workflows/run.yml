@@ -1,0 +1,27 @@
+name: Cloud Worker 24/7
+
+on:
+  workflow_dispatch: # Cho phép bấm nút chạy thủ công bất cứ lúc nào
+  schedule:
+    - cron: '0 */6 * * *' # Tự động chạy lại cứ mỗi 6 tiếng một lần trên mây
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Tải mã nguồn về máy chủ mây
+      uses: actions/checkout@v4
+
+    - name: 🐍 Cài đặt môi trường Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: 📦 Cài đặt các thư viện cần thiết (nếu có)
+      run: |
+        pip install --upgrade pip
+        # pip install requests flask (thêm thư viện của ông vào đây nếu cần)
+
+    - name: 🚀 Chạy script Python
+      run: python bot.py
